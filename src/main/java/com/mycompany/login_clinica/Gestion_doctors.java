@@ -48,7 +48,6 @@ public class Gestion_doctors extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -56,7 +55,6 @@ public class Gestion_doctors extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jTextField9 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -66,9 +64,9 @@ public class Gestion_doctors extends javax.swing.JFrame {
         jTextField10 = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -103,7 +101,6 @@ public class Gestion_doctors extends javax.swing.JFrame {
         getContentPane().add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 110, 160, -1));
         getContentPane().add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 140, 160, -1));
         getContentPane().add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 170, 160, -1));
-        getContentPane().add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 200, 160, -1));
 
         jLabel1.setForeground(java.awt.Color.white);
         jLabel1.setText("DNI:");
@@ -132,10 +129,6 @@ public class Gestion_doctors extends javax.swing.JFrame {
         jLabel7.setForeground(java.awt.Color.white);
         jLabel7.setText("Dirección:");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 170, -1, -1));
-
-        jLabel8.setForeground(java.awt.Color.white);
-        jLabel8.setText("Género:");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 200, -1, -1));
 
         jLabel9.setForeground(java.awt.Color.white);
         jLabel9.setText("Teléfono:");
@@ -187,18 +180,7 @@ public class Gestion_doctors extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 530, -1, -1));
-
-        jButton6.setText("Limpiar");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 260, -1, -1));
-
-        jLabel11.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jamyl\\Desktop\\fondoG.png")); // NOI18N
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 590));
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 550, -1, -1));
 
         jButton4.setText("Limpiar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -206,9 +188,21 @@ public class Gestion_doctors extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 242, -1, -1));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 260, -1, -1));
+
+        jButton6.setText("Gestionar Pacientes");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 550, -1, -1));
+
+        jLabel11.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jamyl\\Desktop\\fondoG.png")); // NOI18N
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 590));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -327,7 +321,6 @@ public class Gestion_doctors extends javax.swing.JFrame {
         jTextField5.setText("");
         jTextField6.setText("");
         jTextField7.setText("");
-        jTextField8.setText("");
         jTextField9.setText("");
         jTextField10.setText("");
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -338,13 +331,13 @@ public class Gestion_doctors extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-        // Obtener el DNI del JTextField
+        // Obtiene el DNI del JTextField1
         String dni = jTextField1.getText(); // Supongo que el JTextField donde se ingresa el DNI es jTextField1
 
-        // Crear la URL con el DNI proporcionado
+        // Crea la URL con el DNI proporcionado
         URL url = new URL("http://localhost:8080/api/doctor/" + dni);
         
-        // Crear la conexión HTTP y establecer el método DELETE
+        // Crea la conexión HTTP y establecer el método DELETE
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("DELETE");
 
@@ -374,16 +367,13 @@ public class Gestion_doctors extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        jTextField1.setText("");
-        jTextField2.setText("");
-        jTextField3.setText("");
-        jTextField4.setText("");
-        jTextField5.setText("");
-        jTextField6.setText("");
-        jTextField7.setText("");
-        jTextField8.setText("");
-        jTextField9.setText("");
-        jTextField10.setText("");
+        Gestion_patients gestionPatientsFrame = new Gestion_patients();
+
+        // Hacer visible el JFrame Gestion_doctors
+        gestionPatientsFrame.setVisible(true);
+
+        // Cerrar el JFrame actual (Gestion_users)
+        dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
   
     /**
@@ -439,7 +429,6 @@ public class Gestion_doctors extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
@@ -451,7 +440,6 @@ public class Gestion_doctors extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,25 +4,17 @@
  */
 package com.mycompany.login_clinica;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import javax.swing.JOptionPane;
 import org.json.JSONObject;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-import java.net.HttpCookie;
-import org.json.JSONException;
+
+
 
 
 /**
@@ -30,9 +22,8 @@ import org.json.JSONException;
  * @author Jamyl
  */
 public class Login extends javax.swing.JFrame {
-    private static final String LOGIN_ENDPOINT = "http://localhost:8080/api/auth/loginUser";
-    private static final String USER_INFO_ENDPOINT = "http://localhost:8080/api/user/";
-
+    
+    
     /**
      * Creates new form Login
      */
@@ -93,62 +84,70 @@ public class Login extends javax.swing.JFrame {
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 2, 400, 250));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-        // URL del endpoint
-        URL url = new URL("http://localhost:8080/api/auth/loginUser");
 
-        // Abrir conexión
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        String dni = jTextField1.getText();
+        String password = new String(jPasswordField1.getPassword());
 
-        // Configurar la conexión para enviar una solicitud POST
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setDoOutput(true);
+        // Verificar las credenciales de administrador
+        if (dni.equals("12344321") && password.equals("12345678")) {
+            JOptionPane.showMessageDialog(this, "Acceso como administrador.");
+            Menu_inicio Menu_inicioFrame = new Menu_inicio();
 
-        // Construir el JSON con los datos del JTextField y JPasswordField
-        JSONObject jsonInputString = new JSONObject();
-        jsonInputString.put("dni", jTextField1.getText());
-        jsonInputString.put("password", new String(jPasswordField1.getPassword()));
+            // Hacer visible el JFrame Gestion_doctors
+            Menu_inicioFrame.setVisible(true);
 
-        // Enviar los datos al servidor
-        try (OutputStream os = con.getOutputStream()) {
-            byte[] input = jsonInputString.toString().getBytes("utf-8");
-            os.write(input, 0, input.length);
+            // Cerrar el JFrame actual (Gestion_users)
+            dispose();
+        } else {
+            
+            JOptionPane.showMessageDialog(this, "Credenciales inválidas.");
+            return; 
         }
 
-        // Leer la respuesta del servidor
-        try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(con.getInputStream(), "utf-8"))) {
-            StringBuilder response = new StringBuilder();
-            String responseLine = null;
-            while ((responseLine = br.readLine()) != null) {
-                response.append(responseLine.trim());
+        // Hacer la solicitud POST al endpoint
+        try {
+            URL url = new URL("http://localhost:8080/api/auth/loginUser");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            // Puedes configurar cualquier otro header que necesites aquí
+
+            // Aquí puedes enviar los datos si es necesario
+            // Por ejemplo, si necesitas enviar el DNI y la contraseña, puedes hacerlo así:
+            String postData = "dni=" + URLEncoder.encode(dni, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
+            try (OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream())) {
+                writer.write(postData);
+                writer.flush();
             }
 
-            // Decodificar el token recibido y mostrarlo en la consola
-            String token = new JSONObject(response.toString()).getString("token");
-            System.out.println("Token: " + token);
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Leer el token de la respuesta
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        // Suponiendo que el token está en formato JSON y tiene una clave "token"
+                        // Si el token está en otro formato, ajusta este código en consecuencia
+                        JSONObject jsonResponse = new JSONObject(line);
+                        String token = jsonResponse.getString("token");
+                        System.out.println("Token: " + token);
+                    }
+                }
+            } else {
+                System.out.println("Error en la solicitud. Código de respuesta: " + responseCode);
+            }
 
-            // Decodificar el token y obtener el dato del DNI
-            Jws<Claims> jwtClaims = Jwts.parser().setSigningKey("clave-secreta").parseClaimsJws(token);
-            String dni = jwtClaims.getBody().get("dni", String.class);
-            System.out.println("DNI: " + dni);
-            
+            conn.disconnect();
+        } catch (IOException e) {
+            System.err.println("Error al realizar la solicitud: " + e.getMessage());
         }
-
-        // Cerrar la conexión
-        con.disconnect();
-
-    } catch (IOException e) {
-        e.printStackTrace();
-        // Manejar cualquier excepción de IO
-        JOptionPane.showMessageDialog(this, "Error al conectar al servidor", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-        
     }//GEN-LAST:event_jButton1ActionPerformed
+   
     
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
         // TODO add your handling code here:
